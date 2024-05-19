@@ -24,3 +24,7 @@
   margin-bottom: 20px;
   text-align: center;
 }
+
+.error {
+  @include text(14px, 14px, 600, $red);
+}

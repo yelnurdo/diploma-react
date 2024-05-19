@@ -2,19 +2,20 @@ import { FirebaseError } from 'firebase/app';
 import {
   signInWithEmailAndPassword,
   signOut,
-  User
 } from 'firebase/auth';
 import { auth } from './config';
+import { IUser } from '../utils/interfaces';
 
-export const firebaseAuthSignIn = async (emailProp: string, password: string): Promise<string | User> => {
+
+export const firebaseAuthSignIn = async (emailProp: string, password: string): Promise<string | IUser> => {
   try {
     const { user } = await signInWithEmailAndPassword(auth, emailProp, password);
 
-    const token = await user.getIdToken();
-    const { email, uid } = user;
-    console.log(token, email, uid);
     if (user) {
-      return user;
+      const token = await user.getIdToken();
+      const { email, uid } = user;
+      
+      return { email: email!, uid, token };
     }
   } catch (error: unknown) {
     const firebaseError = error as FirebaseError;

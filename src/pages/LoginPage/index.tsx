@@ -4,15 +4,26 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import styles from "./LoginPage.module.scss";
 import { firebaseAuthSignIn } from "../../firebase/auth";
+import { getErrorMessage } from "../../utils/errors";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import { setUser } from "../../redux/slices/userSlice";
 
 const LoginPage: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const [error, setError] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   const signIn = async (event: FormEvent) => {
     event.preventDefault();
     if (email.trim() !== "" && password.trim() !== "") {
-      await firebaseAuthSignIn(email, password);
+      const result = await firebaseAuthSignIn(email, password);
+      if (typeof result === "string") {
+        setError(getErrorMessage(result));
+      } else {
+        setError("Signed in successfully");
+        dispatch(setUser(result));
+      }
     }
   };
 
@@ -37,6 +48,7 @@ const LoginPage: React.FC = () => {
             setValue={setPassword}
           />
           <Button text="Login" />
+          {error && <p className={styles.error}>{error}</p>}
         </form>
       </div>
     </div>
