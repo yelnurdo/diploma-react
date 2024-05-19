@@ -1,0 +1,15 @@
+@import "../../assets/scss/lib/variables";
+@import "../../assets/scss/lib/mixins";
+
+.button {
+  padding: 12px 24px;
+  background: $blue;
+  @include text(18px, 18px, 700, $white);
+  transition: 0.3s ease;
+
+  &:hover {
+    cursor: pointer;
+    background: $blue-hover;
+  }
+}
+

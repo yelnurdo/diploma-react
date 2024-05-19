@@ -1,0 +1,35 @@
+@import "../../assets/scss/lib/variables";
+@import "../../assets/scss/lib/mixins";
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  @include text(18px, 24px, 700, $dark-gray);
+}
+
+.input {
+  padding: 12px 24px;
+  outline: none;
+}
+
+.block {
+  position: relative;
+
+  input {
+    width: 100%;
+    padding: 12px 24px 12px 48px;
+  }
+
+  svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    color: $light-gray;
+  }
+}
