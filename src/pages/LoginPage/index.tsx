@@ -1,12 +1,12 @@
 import { FormEvent, useState } from "react";
 import { faAt, faLock } from "@fortawesome/free-solid-svg-icons";
-import Input from "../../components/Input";
-import Button from "../../components/Button";
+import { firebaseAuthSignIn } from "@my-firebase/auth";
+import { setUser } from "@redux/slices/userSlice";
+import { useAppDispatch } from "@hooks/reduxHooks";
+import Input from "@components/Input";
+import Button from "@components/Button";
+import { getErrorMessage } from "@utils/errors";
 import styles from "./LoginPage.module.scss";
-import { firebaseAuthSignIn } from "../../firebase/auth";
-import { getErrorMessage } from "../../utils/errors";
-import { useAppDispatch } from "../../hooks/reduxHooks";
-import { setUser } from "../../redux/slices/userSlice";
 
 const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();

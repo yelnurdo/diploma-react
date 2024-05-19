@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IUser } from '../../utils/interfaces';
+import { IUser } from '@utils/interfaces';
 
 const initialState: IUser = {
   email: '',
