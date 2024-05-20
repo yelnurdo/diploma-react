@@ -1,0 +1,7 @@
+@import "../../assets/scss/lib/variables";
+@import "../../assets/scss/lib/mixins";
+
+.layout {
+  height: 100vh;
+  @include flex(center, center);
+}

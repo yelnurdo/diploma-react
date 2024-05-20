@@ -3,3 +3,8 @@ export interface IUser {
   uid: string;
   token: string;
 }
+
+export interface IAppRoute {
+  path: string;
+  element: React.FC;
+}

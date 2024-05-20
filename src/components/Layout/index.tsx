@@ -1,4 +1,5 @@
 import { useAuth } from "@hooks/useAuth";
+import styles from "./Layout.module.scss";
 
 interface Props {
   children?: React.ReactNode;
@@ -6,8 +7,8 @@ interface Props {
 
 const Layout: React.FC<Props> = ({ children }) => {
   const { isAuth } = useAuth();
-  console.log(isAuth);
-  return <div>{children}</div>;
+
+  return isAuth ? <div>{children}</div> : <div className={styles.layout}>{children}</div>;
 };
 
 export default Layout;
