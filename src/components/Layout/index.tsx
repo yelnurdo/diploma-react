@@ -1,13 +1,23 @@
 import { useAuth } from "@hooks/useAuth";
-import styles from "./Layout.module.scss";
 import Sidebar from "@components/Sidebar";
+import Loader from "@components/Loader";
+import styles from "./Layout.module.scss";
 
 interface Props {
   children?: React.ReactNode;
 }
 
 const Layout: React.FC<Props> = ({ children }) => {
-  const { isAuth } = useAuth();
+  const { isAuth, loading } = useAuth();
+
+  console.log(loading);
+  if (loading) {
+    return (
+      <div className={styles.layout}>
+        <Loader isFull={true} />
+      </div>
+    );
+  }
 
   return isAuth ? (
     <div className={styles.dashboard}>

@@ -29,7 +29,7 @@ const ReadingListPage: React.FC = () => {
   return (
     <div className={styles.page}>
       <Title title="Reading Tests" />
-      <div className={styles.layout}>
+      <div>
         {isLoading ? (
           <Loader isFull={true} />
         ) : (
