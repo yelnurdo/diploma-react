@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { getAllReadingTests } from "@my-firebase/firestore";
 import Loader from "@components/Loader";
-import Title from "@components/Title";
-import { IReadingTest } from "@utils/interfaces";
-import styles from "./ReadingListPage.module.scss";
+import Header from "@components/Header";
 import ReadingTestCard from "@components/ReadingTestCard";
+import { IReadingTest } from "@utils/interfaces";
+import { CREATE_READING_PAGE_ROUTE } from "@utils/consts";
+import styles from "./ReadingListPage.module.scss";
 
 const ReadingListPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -28,10 +29,10 @@ const ReadingListPage: React.FC = () => {
 
   return (
     <div className={styles.page}>
-      <Title title="Reading Tests" />
-      <div>
+      <Header title="Reading Tests" link={CREATE_READING_PAGE_ROUTE} />
+      <div className={styles.wrapper}>
         {isLoading ? (
-          <Loader isFull={true} />
+          <Loader isLarge={true} />
         ) : (
           <div className={styles.grid}>
             {tests.map((item) => (

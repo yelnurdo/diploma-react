@@ -14,9 +14,10 @@ import { deleteData, updateReadingTaskUploadedImage } from "@my-firebase/firesto
 import Button from "@components/Button";
 import InputGrid from "@components/InputGrid";
 import ImageViewer from "@components/ImageViewer";
-import { IReadingTest } from "@utils/interfaces";
-import styles from "./ReadingTestCard.module.scss";
 import Loader from "@components/Loader";
+import { IReadingTest } from "@utils/interfaces";
+import { READING_TESTS_COLLECTION } from "@utils/consts";
+import styles from "./ReadingTestCard.module.scss";
 
 interface Props {
   item: IReadingTest;
@@ -40,7 +41,7 @@ const ReadingTestCard: React.FC<Props> = ({ item }) => {
     if (file) {
       try {
         setIsLoading(true);
-        const url = await uploadImage(file);
+        const url = await uploadImage(READING_TESTS_COLLECTION, file);
         await updateReadingTaskUploadedImage(item.id, url, !item.img2);
         !!item.img2 ? item.img2 === url : item.img3 === url;
         setIsLoading(false);
@@ -55,7 +56,7 @@ const ReadingTestCard: React.FC<Props> = ({ item }) => {
     event.preventDefault();
     try {
       setIsLoading(true);
-      await deleteData("ReadingTests", item.id);
+      await deleteData(READING_TESTS_COLLECTION, item.id);
       setIsLoading(false);
       window.location.reload();
     } catch (error) {

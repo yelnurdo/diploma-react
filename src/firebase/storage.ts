@@ -2,9 +2,9 @@
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "./config";
 
-export const uploadImage = (file: File): Promise<string> => {
+export const uploadImage = (collection: string,file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const storageRef = ref(storage, `ReadingTests/${Date.now()}`);
+    const storageRef = ref(storage, `${collection}/${Date.now()}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(

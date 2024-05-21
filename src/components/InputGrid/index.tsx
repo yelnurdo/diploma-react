@@ -2,6 +2,7 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import { updateData } from "@my-firebase/firestore";
 import Button from "@components/Button";
 import { IReadingTest } from "@utils/interfaces";
+import { READING_TESTS_COLLECTION } from "@utils/consts";
 import styles from "./InputGrid.module.scss";
 
 interface Props {
@@ -24,7 +25,7 @@ const InputGrid: React.FC<Props> = ({ test }) => {
     event.preventDefault();
     try {
       setIsLoading(true);
-      await updateData("ReadingTests", test.id, inputs);
+      await updateData(READING_TESTS_COLLECTION, test.id, inputs);
       setIsLoading(false);
       window.location.reload();
     } catch (error) {

@@ -1,0 +1,22 @@
+@import "../../assets/scss/lib/variables";
+@import "../../assets/scss/lib/mixins";
+
+.page {
+  height: 100%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 40px;
+}
+
+.error {
+  @include text(16px, 24px, 700, $red);
+}

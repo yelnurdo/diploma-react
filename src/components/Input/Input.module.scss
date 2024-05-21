@@ -8,12 +8,23 @@
 }
 
 .title {
+  position: relative;
   @include text(18px, 24px, 700, $dark-gray);
+
+  span {
+    position: absolute;
+    @include text(14px, 14px, 500, $red);
+  }
 }
 
 .input {
+  width: 100%;
   padding: 12px 24px;
   outline: none;
+}
+
+.border {
+  border: 1px solid $gray;
 }
 
 .block {

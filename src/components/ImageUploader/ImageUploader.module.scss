@@ -1,0 +1,55 @@
+@import "../../assets/scss/lib/variables";
+@import "../../assets/scss/lib/mixins";
+
+.form {
+  padding: 24px;
+  border: 1px solid $gray;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  h4 {
+    position: relative;
+    @include text(21px, 28px, 700, $dark-gray);
+
+    span {
+      position: absolute;
+      @include text(14px, 14px, 500, $red);
+    }
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+}
+
+.uploader {
+  width: 100%;
+  border: 4px dashed $blue;
+  border-radius: 24px;
+  background: rgba($blue, 0.1);
+  height: 120px;
+  @include flex(center, center);
+  gap: 16px;
+  transition: 0.3s ease;
+
+  svg {
+    color: $blue;
+    font-size: 36px;
+  }
+
+  p {
+    @include text(20px, 24px, 500, $blue);
+  }
+
+  &:hover {
+    cursor: pointer;
+    background: rgba($blue, 0.2);
+  }
+}
+
+.disabled {
+  opacity: 0.7;
+  pointer-events: none;
+}

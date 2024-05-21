@@ -1,9 +1,10 @@
-import { collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
 import { firestore } from "./config";
 import { IReadingTest } from "@utils/interfaces";
+import { READING_TESTS_COLLECTION } from "@utils/consts";
 
 export const getAllReadingTests = async () => {
-  const readingRef = collection(firestore, "ReadingTests");
+  const readingRef = collection(firestore, READING_TESTS_COLLECTION);
   const querySnapshot = await getDocs(readingRef);
 
   const readingTests: IReadingTest[] = [];
@@ -18,7 +19,7 @@ export const getAllReadingTests = async () => {
 }
 
 export const updateReadingTaskUploadedImage = async (id: string, imageUrl: string, isSecondImage: boolean) => {
-  const docRef = doc(firestore, "ReadingTests", id);
+  const docRef = doc(firestore, READING_TESTS_COLLECTION, id);
   await updateDoc(docRef, isSecondImage ? {
     img2: imageUrl
   } : {
@@ -34,4 +35,11 @@ export const updateData = async (collection: string, id: string, data: any) => {
 export const deleteData = async (collection: string, id: string) => {
   const docRef = doc(firestore, collection, id);
   await deleteDoc(docRef);
+}
+
+export const addNewReadingTest = async (data: Omit<IReadingTest, "id">) => {
+  const collectionRef = collection(firestore, READING_TESTS_COLLECTION);
+  const result = await addDoc(collectionRef, data);
+  const docRef = doc(firestore, READING_TESTS_COLLECTION, result.id);
+  await updateDoc(docRef, { id: result.id });
 }
