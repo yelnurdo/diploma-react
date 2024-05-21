@@ -1,0 +1,17 @@
+@import "../../assets/scss/lib/variables";
+@import "../../assets/scss/lib/mixins";
+
+.page {
+  height: 100%;
+}
+
+.layout {
+  height: 100%;
+}
+
+.grid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 48px 40px;
+}

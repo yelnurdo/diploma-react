@@ -8,10 +8,27 @@
 
 .dashboard {
   height: 100vh;
+  overflow-y: hidden;
   @include flex(flex-start, flex-start);
 }
 
 .content {
+  height: 100%;
+  overflow-y: scroll;
   flex: 1;
   padding: 40px 60px;
+
+  &::-webkit-scrollbar{
+    width: 15px;
+  }
+
+  &::-webkit-scrollbar-track{
+    background: $white;
+  }
+
+  &::-webkit-scrollbar-thumb{
+    background: $blue;
+    border-radius: 10px;
+    border: 3px solid $white;
+  }
 }

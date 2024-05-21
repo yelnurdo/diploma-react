@@ -1,0 +1,7 @@
+@import "../../assets/scss/lib/variables";
+@import "../../assets/scss/lib/mixins";
+
+.title {
+  @include text(36px, 48px, 700, $dark-gray);
+  margin-bottom: 36px;
+}
