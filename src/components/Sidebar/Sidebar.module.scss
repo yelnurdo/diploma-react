@@ -1,0 +1,53 @@
+@import "../../assets/scss/lib/variables";
+@import "../../assets/scss/lib/mixins";
+
+.sidebar {
+  padding: 24px 0;
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  background: $blue;
+}
+
+.logo {
+  h2 {
+    @include text(28px, 28px, 700, $white);
+    text-align: center;
+
+    span {
+      color: $red;
+    }
+  }
+
+  p {
+    margin-top: 8px;
+    @include text(20px, 20px, 700, $red);
+    text-align: center;
+  }
+
+  margin-bottom: 120px;
+}
+
+.link {
+  padding: 16px 24px;
+  @include flex(flex-start, center);
+  gap: 24px;
+  background: $blue;
+  transition: 0.3s ease;
+
+  p {
+    @include text(20px, 24px, 500, $white);
+  }
+
+  svg {
+    font-size: 24px;
+    color: $white;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background: $blue-hover;
+  }
+}

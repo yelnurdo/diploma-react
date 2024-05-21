@@ -10,12 +10,14 @@ import styles from "./LoginPage.module.scss";
 
 const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   const signIn = async (event: FormEvent) => {
     event.preventDefault();
+    setIsLoading(true);
     if (email.trim() !== "" && password.trim() !== "") {
       const result = await firebaseAuthSignIn(email, password);
       if (typeof result === "string") {
@@ -25,6 +27,7 @@ const LoginPage: React.FC = () => {
         dispatch(setUser(result));
       }
     }
+    setIsLoading(false);
   };
 
   return (
@@ -47,7 +50,7 @@ const LoginPage: React.FC = () => {
             value={password}
             setValue={setPassword}
           />
-          <Button text="Login" />
+          <Button text="Login" isLoading={isLoading} />
           {error && <p className={styles.error}>{error}</p>}
         </form>
       </div>

@@ -5,3 +5,13 @@
   height: 100vh;
   @include flex(center, center);
 }
+
+.dashboard {
+  height: 100vh;
+  @include flex(flex-start, flex-start);
+}
+
+.content {
+  flex: 1;
+  padding: 40px 60px;
+}
