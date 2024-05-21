@@ -48,7 +48,6 @@
   }
 }
 
-
 .title {
   @include text(16px, 16px, 600, rgba($dark-gray, 0.5));
   margin-bottom: 4px;
@@ -60,38 +59,6 @@
 
 .content {
   margin-top: 16px;
-}
-
-.image {
-  margin-top: 4px;
-  width: 100%;
-  aspect-ratio: 4/3;
-  border: 1px solid $gray;
-  border-radius: 8px;
-  overflow-y: hidden;
-}
-
-.scroll {
-  height: 100%;
-  overflow-y: scroll;
-
-  img {
-    width: 100%;
-  }
-
-  &::-webkit-scrollbar{
-    width: 10px;
-  }
-
-  &::-webkit-scrollbar-track{
-    background: $white;
-  }
-
-  &::-webkit-scrollbar-thumb{
-    background: $blue;
-    border-radius: 10px;
-    border: 2px solid $white;
-  }
 }
 
 .form {
@@ -128,4 +95,44 @@
     cursor: pointer;
     background: rgba($blue, 0.2);
   }
+}
+
+.block {
+  @include flex();
+}
+
+.btns {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: $red;
+  @include flex(center, center);
+  transition: 0.2s ease;
+
+  svg {
+    color: $white;
+    font-size: 16px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background: rgba($red, 0.8);
+  }
+}
+
+.blue {
+  background: $blue;
+
+  &:hover {
+    background: rgba($blue, 0.8);
+  }
+}
+
+.student {
+  margin-top: 16px;
 }

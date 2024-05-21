@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
 import { firestore } from "./config";
 import { IReadingTest } from "@utils/interfaces";
 
@@ -24,4 +24,14 @@ export const updateReadingTaskUploadedImage = async (id: string, imageUrl: strin
   } : {
     img3: imageUrl
   });
+}
+
+export const updateData = async (collection: string, id: string, data: any) => {
+  const docRef = doc(firestore, collection, id);
+  await updateDoc(docRef, data);
+}
+
+export const deleteData = async (collection: string, id: string) => {
+  const docRef = doc(firestore, collection, id);
+  await deleteDoc(docRef);
 }
