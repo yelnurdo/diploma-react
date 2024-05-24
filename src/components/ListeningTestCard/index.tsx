@@ -1,62 +1,52 @@
-import { FormEvent, ChangeEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBan,
   faCheck,
-  faImage,
+  faFolderClosed,
   faPenToSquare,
-  faPlus,
   faTrash
 } from "@fortawesome/free-solid-svg-icons";
-import { uploadImage } from "@my-firebase/storage";
-import { deleteData, updateReadingTaskUploadedImage } from "@my-firebase/firestore";
-import Button from "@components/Button";
+import { deleteData } from "@my-firebase/firestore";
 import InputGrid from "@components/InputGrid";
 import ImageViewer from "@components/ImageViewer";
 import Loader from "@components/Loader";
-import { IReadingTest } from "@utils/interfaces";
-import { READING_TESTS_COLLECTION } from "@utils/consts";
-import styles from "./ReadingTestCard.module.scss";
+import AudioPlayer from "@components/AudioPlayer";
+import { IListeningTest } from "@utils/interfaces";
+import { LISTENING_TESTS_COLLECTION } from "@utils/consts";
+import styles from "./ListeningTestCard.module.scss";
 
 interface Props {
-  item: IReadingTest;
+  item: IListeningTest;
 }
 
-const ReadingTestCard: React.FC<Props> = ({ item }) => {
+const ListeningTestCard: React.FC<Props> = ({ item }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [file, setFile] = useState<File | null>(null);
   const [activeIndex, setActiveIndex] = useState<number>(1);
-  const activeImageUrl = activeIndex === 1 ? item.img1 : activeIndex === 2 ? item.img2 : item.img3;
-
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFile(e.target.files[0]);
-    }
-  };
-
-  const handleUpload = async (event: FormEvent) => {
-    event.preventDefault();
-    if (file) {
-      try {
-        setIsLoading(true);
-        const url = await uploadImage(READING_TESTS_COLLECTION, file);
-        await updateReadingTaskUploadedImage(item.id, url, !item.img2);
-        !!item.img2 ? item.img2 === url : item.img3 === url;
-        setIsLoading(false);
-        window.location.reload();
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
+  const activeImageUrl =
+    activeIndex === 1
+      ? item.img1
+      : activeIndex === 2
+      ? item.img2
+      : activeIndex === 3
+      ? item.img3
+      : item.img4;
+  const activeAudioUrl =
+    activeIndex === 1
+      ? item.audio1
+      : activeIndex === 2
+      ? item.audio2
+      : activeIndex === 3
+      ? item.audio3
+      : item.audio4;
 
   const handleDelete = async (event: FormEvent) => {
     event.preventDefault();
     try {
       setIsLoading(true);
-      await deleteData(READING_TESTS_COLLECTION, item.id);
+      await deleteData(LISTENING_TESTS_COLLECTION, item.id);
       setIsLoading(false);
       window.location.reload();
     } catch (error) {
@@ -71,28 +61,28 @@ const ReadingTestCard: React.FC<Props> = ({ item }) => {
           <div
             className={classNames(styles.button, { [styles.active]: activeIndex === 1 })}
             onClick={() => setActiveIndex(1)}>
-            <FontAwesomeIcon icon={faImage} />
+            <FontAwesomeIcon icon={faFolderClosed} />
           </div>
         )}
         {item.img2 && (
           <div
             className={classNames(styles.button, { [styles.active]: activeIndex === 2 })}
             onClick={() => setActiveIndex(2)}>
-            <FontAwesomeIcon icon={faImage} />
+            <FontAwesomeIcon icon={faFolderClosed} />
           </div>
         )}
         {item.img3 && (
           <div
             className={classNames(styles.button, { [styles.active]: activeIndex === 3 })}
             onClick={() => setActiveIndex(3)}>
-            <FontAwesomeIcon icon={faImage} />
+            <FontAwesomeIcon icon={faFolderClosed} />
           </div>
         )}
-        {!(item.img1 && item.img2 && item.img3) && (
+        {item.img4 && (
           <div
             className={classNames(styles.button, { [styles.active]: activeIndex === 4 })}
             onClick={() => setActiveIndex(4)}>
-            <FontAwesomeIcon icon={faPlus} />
+            <FontAwesomeIcon icon={faFolderClosed} />
           </div>
         )}
         <div
@@ -129,32 +119,20 @@ const ReadingTestCard: React.FC<Props> = ({ item }) => {
           <h4 className={styles.text}>{item.student}</h4>
         </div>
       )}
-      {(activeIndex === 1 || activeIndex === 2 || activeIndex === 3) && (
+      {(activeIndex === 1 || activeIndex === 2 || activeIndex === 3 || activeIndex === 4) && (
         <div className={styles.content}>
           <p className={styles.title}>Image №{activeIndex}</p>
           <ImageViewer imageUrl={activeImageUrl} />
+          <p className={styles.title} style={{ marginTop: 16 }}>
+            Audio №{activeIndex}
+          </p>
+          <AudioPlayer audioUrl={activeAudioUrl} />
         </div>
       )}
-      {activeIndex === 4 && (
-        <form onSubmit={handleUpload} className={styles.form}>
-          <input type="file" onChange={handleFileChange} id="image" accept="image/*" />
-          {file ? (
-            <div>
-              <p className={styles.title}>Image Preview</p>
-              <ImageViewer imageUrl={URL.createObjectURL(file)} />
-            </div>
-          ) : (
-            <label htmlFor="image" className={styles.uploader}>
-              <FontAwesomeIcon icon={faImage} />
-              <p>Choose image</p>
-            </label>
-          )}
-          <Button text="Upload Image" isLoading={isLoading} />
-        </form>
-      )}
-      {activeIndex === 5 && <InputGrid test={item} collection={READING_TESTS_COLLECTION} />}
+
+      {activeIndex === 5 && <InputGrid test={item} collection={LISTENING_TESTS_COLLECTION} />}
     </div>
   );
 };
 
-export default ReadingTestCard;
+export default ListeningTestCard;

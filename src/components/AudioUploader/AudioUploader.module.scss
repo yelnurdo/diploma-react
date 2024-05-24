@@ -24,6 +24,11 @@
   }
 }
 
+.title {
+  @include text(16px, 16px, 600, rgba($dark-gray, 0.5));
+  margin-bottom: 4px;
+}
+
 .uploader {
   width: 100%;
   border: 4px dashed $blue;
