@@ -1,7 +1,7 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
 import { firestore } from "./config";
-import { IReadingTest } from "@utils/interfaces";
-import { READING_TESTS_COLLECTION } from "@utils/consts";
+import { IListeningTest, IReadingTest } from "@utils/interfaces";
+import { LISTENING_TESTS_COLLECTION, READING_TESTS_COLLECTION } from "@utils/consts";
 
 export const getAllReadingTests = async () => {
   const readingRef = collection(firestore, READING_TESTS_COLLECTION);
@@ -41,5 +41,27 @@ export const addNewReadingTest = async (data: Omit<IReadingTest, "id">) => {
   const collectionRef = collection(firestore, READING_TESTS_COLLECTION);
   const result = await addDoc(collectionRef, data);
   const docRef = doc(firestore, READING_TESTS_COLLECTION, result.id);
+  await updateDoc(docRef, { id: result.id });
+}
+
+export const getAllListeningTests = async () => {
+  const listeningRef = collection(firestore, LISTENING_TESTS_COLLECTION);
+  const querySnapshot = await getDocs(listeningRef);
+
+  const listeningTests: IListeningTest[] = [];
+
+  querySnapshot.forEach(doc => {
+    const item = doc.data() as IListeningTest;
+    item.id = doc.id;
+    listeningTests.push(item);
+  });
+
+  return listeningTests;
+}
+
+export const addNewListeningTest = async (data: Omit<IListeningTest, "id">) => {
+  const collectionRef = collection(firestore, LISTENING_TESTS_COLLECTION);
+  const result = await addDoc(collectionRef, data);
+  const docRef = doc(firestore, LISTENING_TESTS_COLLECTION, result.id);
   await updateDoc(docRef, { id: result.id });
 }

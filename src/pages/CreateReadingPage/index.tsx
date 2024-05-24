@@ -7,7 +7,7 @@ import Input from "@components/Input";
 import Button from "@components/Button";
 import ImageUploader from "@components/ImageUploader";
 import { IReadingTest } from "@utils/interfaces";
-import { READING_PAGE_ROUTE } from "@utils/consts";
+import { READING_PAGE_ROUTE, READING_TESTS_COLLECTION } from "@utils/consts";
 import styles from "./CreateReadingPage.module.scss";
 
 const CreateReadingPage: React.FC = () => {
@@ -15,6 +15,7 @@ const CreateReadingPage: React.FC = () => {
   const initialReadingTest: Omit<IReadingTest, "part" | "img1" | "img2" | "img3"> = {
     id: "",
     student: "",
+    studentId: "",
     q1: "",
     q2: "",
     q3: "",
@@ -100,9 +101,19 @@ const CreateReadingPage: React.FC = () => {
           required={true}
         />
         <div className={styles.grid}>
-          <ImageUploader setImage={setImg1} num={1} />
-          <ImageUploader setImage={setImg2} num={2} disabled={!img1} />
-          <ImageUploader setImage={setImg3} num={3} disabled={!img1 || !img2} />
+          <ImageUploader folderName={READING_TESTS_COLLECTION} setImage={setImg1} num={1} />
+          <ImageUploader
+            folderName={READING_TESTS_COLLECTION}
+            setImage={setImg2}
+            num={2}
+            disabled={!img1}
+          />
+          <ImageUploader
+            folderName={READING_TESTS_COLLECTION}
+            setImage={setImg3}
+            num={3}
+            disabled={!img1 || !img2}
+          />
         </div>
         <Button text="Create" isLoading={isLoading} />
         {error && <p className={styles.error}>{error}</p>}
