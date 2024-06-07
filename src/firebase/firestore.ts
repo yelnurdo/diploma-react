@@ -1,6 +1,6 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
 import { firestore } from "./config";
-import { IListeningTest, IReadingTest } from "@utils/interfaces";
+import { IListeningTest, IReadingTest, IWritingTest } from "@utils/interfaces";
 import { LISTENING_TESTS_COLLECTION, READING_TESTS_COLLECTION } from "@utils/consts";
 
 export const getAllReadingTests = async () => {
@@ -64,4 +64,47 @@ export const addNewListeningTest = async (data: Omit<IListeningTest, "id">) => {
   const result = await addDoc(collectionRef, data);
   const docRef = doc(firestore, LISTENING_TESTS_COLLECTION, result.id);
   await updateDoc(docRef, { id: result.id });
+}
+const WRITING_TESTS_COLLECTION = "WritingTests";
+
+// Function to get all writing tests
+export const getAllWritingTests = async () => {
+  const writingRef = collection(firestore, WRITING_TESTS_COLLECTION);
+  const querySnapshot = await getDocs(writingRef);
+
+  const writingTests: IWritingTest[] = [];
+
+  querySnapshot.forEach(doc => {
+    const item = doc.data() as IWritingTest;
+    item.id = doc.id;
+    writingTests.push(item);
+  });
+
+  return writingTests;
+}
+
+// Function to add a new writing test
+export const addNewWritingTest = async (data: Omit<IWritingTest, "id">) => {
+  const collectionRef = collection(firestore, WRITING_TESTS_COLLECTION);
+  const result = await addDoc(collectionRef, data);
+  const docRef = doc(firestore, WRITING_TESTS_COLLECTION, result.id);
+  await updateDoc(docRef, { id: result.id });
+}
+
+// Function to update writing test data
+export const updateWritingTest = async (id: string, data: Partial<IWritingTest>) => {
+  const docRef = doc(firestore, WRITING_TESTS_COLLECTION, id);
+  await updateDoc(docRef, data);
+}
+
+// Function to update uploaded image for writing test
+export const updateWritingTaskUploadedImage = async (id: string, imageUrl: string, isSecondImage: boolean) => {
+  const docRef = doc(firestore, WRITING_TESTS_COLLECTION, id);
+  await updateDoc(docRef, isSecondImage ? { img2: imageUrl } : { img1: imageUrl });
+}
+
+// Function to delete a writing test
+export const deleteWritingTest = async (id: string) => {
+  const docRef = doc(firestore, WRITING_TESTS_COLLECTION, id);
+  await deleteDoc(docRef);
 }

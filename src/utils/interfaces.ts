@@ -113,3 +113,15 @@ export interface IListeningTest {
   q39: string;
   q40: string;
 }
+export interface IWritingTest {
+  id: string;
+  part: string;
+  img1: string;
+  img2: string;
+  q1: string;
+  q2: string;
+  student: string;
+  studentId: string;
+  wordCount1: string;
+  wordCount2: string;
+}
