@@ -67,12 +67,12 @@ const ListeningTestsAnswersPage: React.FC = () => {
                   {item.audio3 && <audio controls src={item.audio3} className={styles.audio}></audio>}
                   {item.audio4 && <audio controls src={item.audio4} className={styles.audio}></audio>}
                   {[...Array(40)].map((_, i) => (
-                    <p key={i}>Answer {i + 1}: {item[`q${i + 1}`]}</p>
+                    <p key={i}>Answer {i + 1}: {item[`q${i + 1}` as keyof IListeningTestAnswer]}</p>
                   ))}
                   <Input
                     title="Feedback"
                     placeholder="Enter feedback"
-                    value={feedback[item.id] || item.feedback}
+                    value={feedback[item.id] || item.feedback || ''}
                     setValue={(value) => handleFeedbackChange(item.id, value)}
                     hasBorder={true}
                   />

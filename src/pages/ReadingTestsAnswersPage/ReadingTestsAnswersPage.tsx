@@ -62,12 +62,12 @@ const ReadingTestsAnswersPage: React.FC = () => {
                   {item.img2 && <img src={item.img2} alt="Test Image 2" className={styles.testImage} />}
                   {item.img3 && <img src={item.img3} alt="Test Image 3" className={styles.testImage} />}
                   {[...Array(40)].map((_, i) => (
-                    <p key={i}>Answer {i + 1}: {item[`q${i + 1}`]}</p>
+                    <p key={i}>Answer {i + 1}: {(item as unknown as Record<string, string>)[`q${i + 1}`]}</p>
                   ))}
                   <Input
                     title="Feedback"
                     placeholder="Enter feedback"
-                    value={feedback[item.id] || item.feedback}
+                    value={feedback[item.id] || item.feedback || ''}
                     setValue={(value) => handleFeedbackChange(item.id, value)}
                     hasBorder={true}
                   />
