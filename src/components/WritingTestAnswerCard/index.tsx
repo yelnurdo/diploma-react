@@ -1,9 +1,8 @@
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, ChangeEvent } from 'react';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { updateWritingTestAnswer } from '@my-firebase/firestore';
-import axios from 'axios';
 import ImageViewer from '@components/ImageViewer';
 import { IWritingTestAnswer } from '@utils/interfaces';
 import styles from './WritingTestAnswerCard.module.scss';
@@ -24,6 +23,8 @@ const WritingTestAnswerCard: React.FC<Props> = ({ item }) => {
   const [q1, setQ1] = useState(item.q1);
   const [q2, setQ2] = useState(item.q2);
 
+  // Commented out AI response fetching
+  /*
   const getAIResponse = async (question: string) => {
     try {
       const response = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
@@ -60,12 +61,15 @@ const WritingTestAnswerCard: React.FC<Props> = ({ item }) => {
 
     fetchAIResponse();
   }, [q1, q2]);
+  */
+
   const handleFeedbackSubmit = async () => {
     setIsLoading(true);
-    // Your logic here
+    await updateWritingTestAnswer(item.id, { feedback1, feedback2, q1, q2 });
     setIsLoading(false);
+    alert('Feedback and answers updated successfully');
   };
-  
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
