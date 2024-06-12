@@ -3,25 +3,25 @@ import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBan, faCheck, faImage, faPenToSquare, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { uploadImage } from "@my-firebase/storage";
-import { deleteData, updateReadingTaskUploadedImage } from "@my-firebase/firestore";
+import { deleteData, updateWritingTaskUploadedImage } from "@my-firebase/firestore";
 import Button from "@components/Button";
 import InputGrid from "@components/InputGrid";
 import ImageViewer from "@components/ImageViewer";
 import Loader from "@components/Loader";
-import { IReadingTest } from "@utils/interfaces";
-import { READING_TESTS_COLLECTION } from "@utils/consts";
-import styles from "./ReadingTestCard.module.scss";
+import { IWritingTest } from "@utils/interfaces";
+import { WRITING_TESTS_COLLECTION } from "@utils/consts";
+import styles from "./WritingTestCard.module.scss";
 
 interface Props {
-  item: IReadingTest;
+  item: IWritingTest;
 }
 
-const ReadingTestCard: React.FC<Props> = ({ item }) => {
+const WritingTestCard: React.FC<Props> = ({ item }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [file, setFile] = useState<File | null>(null);
   const [activeIndex, setActiveIndex] = useState<number>(1);
-  const activeImageUrl = activeIndex === 1 ? item.img1 : activeIndex === 2 ? item.img2 : item.img3;
+  const activeImageUrl = activeIndex === 1 ? item.img1 : activeIndex === 2 ? item.img2 : "";
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -34,16 +34,12 @@ const ReadingTestCard: React.FC<Props> = ({ item }) => {
     if (file) {
       try {
         setIsLoading(true);
-        const url = await uploadImage(READING_TESTS_COLLECTION, file);
+        const url = await uploadImage(WRITING_TESTS_COLLECTION, file);
+        await updateWritingTaskUploadedImage(item.id, url, !!item.img1);
         if (!item.img1) {
-          await updateReadingTaskUploadedImage(item.id, url, false);
           item.img1 = url;
-        } else if (!item.img2) {
-          await updateReadingTaskUploadedImage(item.id, url, true);
-          item.img2 = url;
         } else {
-          await updateReadingTaskUploadedImage(item.id, url, false);
-          item.img3 = url;
+          item.img2 = url;
         }
         setIsLoading(false);
         window.location.reload();
@@ -58,7 +54,7 @@ const ReadingTestCard: React.FC<Props> = ({ item }) => {
     event.preventDefault();
     try {
       setIsLoading(true);
-      await deleteData(READING_TESTS_COLLECTION, item.id);
+      await deleteData(WRITING_TESTS_COLLECTION, item.id);
       setIsLoading(false);
       window.location.reload();
     } catch (error) {
@@ -84,23 +80,16 @@ const ReadingTestCard: React.FC<Props> = ({ item }) => {
             <FontAwesomeIcon icon={faImage} />
           </div>
         )}
-        {item.img3 && (
+        {!(item.img1 && item.img2) && (
           <div
             className={classNames(styles.button, { [styles.active]: activeIndex === 3 })}
             onClick={() => setActiveIndex(3)}>
-            <FontAwesomeIcon icon={faImage} />
-          </div>
-        )}
-        {!(item.img1 && item.img2 && item.img3) && (
-          <div
-            className={classNames(styles.button, { [styles.active]: activeIndex === 4 })}
-            onClick={() => setActiveIndex(4)}>
             <FontAwesomeIcon icon={faPlus} />
           </div>
         )}
         <div
-          className={classNames(styles.button, { [styles.active]: activeIndex === 5 })}
-          onClick={() => setActiveIndex(5)}>
+          className={classNames(styles.button, { [styles.active]: activeIndex === 4 })}
+          onClick={() => setActiveIndex(4)}>
           <FontAwesomeIcon icon={faPenToSquare} />
         </div>
       </div>
@@ -132,13 +121,13 @@ const ReadingTestCard: React.FC<Props> = ({ item }) => {
           <h4 className={styles.text}>{item.student}</h4>
         </div>
       )}
-      {(activeIndex === 1 || activeIndex === 2 || activeIndex === 3) && (
+      {(activeIndex === 1 || activeIndex === 2) && (
         <div className={styles.content}>
           <p className={styles.title}>Image №{activeIndex}</p>
           <ImageViewer imageUrl={activeImageUrl} />
         </div>
       )}
-      {activeIndex === 4 && (
+      {activeIndex === 3 && (
         <form onSubmit={handleUpload} className={styles.form}>
           <input type="file" onChange={handleFileChange} id="image" accept="image/*" />
           {file ? (
@@ -155,9 +144,9 @@ const ReadingTestCard: React.FC<Props> = ({ item }) => {
           <Button text="Upload Image" isLoading={isLoading} />
         </form>
       )}
-      {activeIndex === 5 && <InputGrid test={item} collection={READING_TESTS_COLLECTION} />}
+      {activeIndex === 4 && <InputGrid test={item} collection={WRITING_TESTS_COLLECTION} />}
     </div>
   );
 };
 
-export default ReadingTestCard;
+export default WritingTestCard;

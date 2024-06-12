@@ -1,61 +1,54 @@
-import { FormEvent, useState } from "react";
-import { faAt, faLock } from "@fortawesome/free-solid-svg-icons";
-import { firebaseAuthSignIn } from "@my-firebase/auth";
-import { setUser } from "@redux/slices/userSlice";
-import { useAppDispatch } from "@hooks/reduxHooks";
-import Input from "@components/Input";
-import Button from "@components/Button";
-import { getErrorMessage } from "@utils/errors";
-import styles from "./LoginPage.module.scss";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '@hooks/reduxHooks';
+import { firebaseAuthSignIn } from '@my-firebase/auth';
+import { setUser } from '@redux/slices/userSlice';
+import styles from './LoginPage.module.scss';
 
-const LoginPage: React.FC = () => {
+const Login: React.FC = () => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [error, setError] = useState<string>('');
   const dispatch = useAppDispatch();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const navigate = useNavigate();
 
-  const signIn = async (event: FormEvent) => {
-    event.preventDefault();
-    setIsLoading(true);
-    if (email.trim() !== "" && password.trim() !== "") {
-      const result = await firebaseAuthSignIn(email, password);
-      if (typeof result === "string") {
-        setError(getErrorMessage(result));
-      } else {
-        setError("Signed in successfully");
-        dispatch(setUser(result));
+  const handleLogin = async () => {
+    const user = await firebaseAuthSignIn(email, password);
+    if (typeof user !== 'string') {
+      dispatch(setUser(user));
+      if (email === 'teacher@teacher.kz') {
+        navigate('/reading-answers');
+      } else if (email === 'admin@admin.kz') {
+        navigate('/reading');
       }
+    } else {
+      setError('Login failed: ' + user);
     }
-    setIsLoading(false);
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
-        <h2 className={styles.title}>Log in to Admin Panel</h2>
-        <form className={styles.form} onSubmit={signIn}>
-          <Input
-            title="E-mail"
-            placeholder="Enter your e-mail"
-            icon={faAt}
+        <div className={styles.title}>Login</div>
+        <div className={styles.form}>
+          <input
+            type="email"
+            placeholder="Email"
             value={email}
-            setValue={setEmail}
+            onChange={(e) => setEmail(e.target.value)}
           />
-          <Input
-            title="Password"
-            placeholder="Enter your password"
-            icon={faLock}
+          <input
             type="password"
+            placeholder="Password"
             value={password}
-            setValue={setPassword}
+            onChange={(e) => setPassword(e.target.value)}
           />
-          <Button text="Login" isLoading={isLoading} />
-          {error && <p className={styles.error}>{error}</p>}
-        </form>
+          <button onClick={handleLogin}>Login</button>
+          {error && <div className={styles.error}>{error}</div>}
+        </div>
       </div>
     </div>
   );
 };
 
-export default LoginPage;
+export default Login;

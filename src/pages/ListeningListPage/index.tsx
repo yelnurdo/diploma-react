@@ -36,7 +36,7 @@ const ListeningListPage: React.FC = () => {
         ) : (
           <div className={styles.grid}>
             {tests.map((item) => (
-              <ListeningTestCard item={item} />
+              <ListeningTestCard key={item.id} item={item} />
             ))}
           </div>
         )}

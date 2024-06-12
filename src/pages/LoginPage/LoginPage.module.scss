@@ -1,6 +1,9 @@
 @import "../../assets/scss/lib/variables";
 @import "../../assets/scss/lib/mixins";
 
+$primary-color: #005b9a; // The blue color used in the sidebar
+$secondary-color: #ff0000; // The red color used for "Admin Panel" text
+
 .container {
   width: 100%;
   height: 100%;
@@ -10,21 +13,50 @@
 .wrapper {
   width: 480px;
   padding: 28px 36px;
-  background: $bg;
+  background: $primary-color;
+  border-radius: 8px;
 }
 
 .form {
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  input {
+    padding: 10px;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333;
+
+    &:focus {
+      outline: none;
+      border-color: $secondary-color;
+    }
+  }
+
+  button {
+    padding: 10px;
+    background-color: $secondary-color;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+
+    &:hover {
+      background-color: darken($secondary-color, 10%);
+    }
+  }
 }
 
 .title {
-  @include text(28px, 36px, 700, $dark-gray);
+  @include text(28px, 36px, 700, #fff);
   margin-bottom: 20px;
   text-align: center;
 }
 
 .error {
-  @include text(14px, 14px, 600, $red);
+  @include text(14px, 14px, 600, $secondary-color);
+  text-align: center;
 }
