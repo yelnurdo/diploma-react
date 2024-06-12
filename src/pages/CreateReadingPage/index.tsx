@@ -12,10 +12,14 @@ import styles from "./CreateReadingPage.module.scss";
 
 const CreateReadingPage: React.FC = () => {
   const navigate = useNavigate();
-  const initialReadingTest: Omit<IReadingTest, "part" | "img1" | "img2" | "img3"> = {
-    id: "",
+  const initialReadingTest: Omit<IReadingTest, "id"> = {
+    part: "",
     student: "",
     studentId: "",
+    img1: "",
+    img2: "",
+    img3: "",
+    feedback: "",
     q1: "",
     q2: "",
     q3: "",
@@ -60,16 +64,13 @@ const CreateReadingPage: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const [part, setPart] = useState<string>("");
-  const [img1, setImg1] = useState<string>("");
-  const [img2, setImg2] = useState<string>("");
-  const [img3, setImg3] = useState<string>("");
+  const [formData, setFormData] = useState(initialReadingTest);
 
   const handleAddReadingTest = async (event: FormEvent) => {
     event.preventDefault();
     setError("");
 
-    if (!part || !img1) {
+    if (!formData.part || !formData.img1) {
       setError("You should fill required fields");
       return;
     }
@@ -77,7 +78,7 @@ const CreateReadingPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      await addNewReadingTest({ ...initialReadingTest, part, img1, img2, img3 });
+      await addNewReadingTest(formData);
       navigate(READING_PAGE_ROUTE);
     } catch (error) {
       console.log(error);
@@ -87,6 +88,10 @@ const CreateReadingPage: React.FC = () => {
     }
   };
 
+  const handleChange = (key: keyof IReadingTest, value: string) => {
+    setFormData({ ...formData, [key]: value });
+  };
+
   return (
     <div className={styles.page}>
       <Header title="Create a new reading test" />
@@ -94,25 +99,25 @@ const CreateReadingPage: React.FC = () => {
         <Input
           title="Part name"
           placeholder="Enter test's part"
-          value={part}
-          setValue={setPart}
+          value={formData.part}
+          setValue={(value) => handleChange("part", value)}
           hasBorder={true}
           icon={faPenNib}
           required={true}
         />
         <div className={styles.grid}>
-          <ImageUploader folderName={READING_TESTS_COLLECTION} setImage={setImg1} num={1} />
+          <ImageUploader folderName={READING_TESTS_COLLECTION} setImage={(value) => handleChange("img1", value)} num={1} />
           <ImageUploader
             folderName={READING_TESTS_COLLECTION}
-            setImage={setImg2}
+            setImage={(value) => handleChange("img2", value)}
             num={2}
-            disabled={!img1}
+            disabled={!formData.img1}
           />
           <ImageUploader
             folderName={READING_TESTS_COLLECTION}
-            setImage={setImg3}
+            setImage={(value) => handleChange("img3", value)}
             num={3}
-            disabled={!img1 || !img2}
+            disabled={!formData.img1 || !formData.img2}
           />
         </div>
         <Button text="Create" onClick={() => handleAddReadingTest} isLoading={isLoading} />

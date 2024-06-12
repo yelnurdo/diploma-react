@@ -17,6 +17,7 @@ export interface IReadingTest {
   img1: string;
   img2: string;
   img3: string;
+  feedback: string;
   q1: string;
   q2: string;
   q3: string;
@@ -64,6 +65,7 @@ export interface IListeningTest {
   part: string;
   student: string;
   studentId: string;
+  feedback: string;
   img1: string;
   img2: string;
   img3: string;
@@ -113,6 +115,7 @@ export interface IListeningTest {
   q39: string;
   q40: string;
 }
+
 export interface IWritingTest {
   id: string;
   part: string;
@@ -120,11 +123,14 @@ export interface IWritingTest {
   img2: string;
   q1: string;
   q2: string;
+  feedback1?: string;
+  feedback2?: string;
   student: string;
   studentId: string;
   wordCount1: string;
   wordCount2: string;
 }
+
 export interface IListeningTestAnswer {
   id: string;
   student: string;
@@ -179,7 +185,6 @@ export interface IListeningTestAnswer {
   q39?: string;
   q40?: string;
 }
-
 
 export interface IReadingTestAnswer {
   id: string;
@@ -245,5 +250,4 @@ export interface IWritingTestAnswer {
   wordCount2: string;
   feedback1: string;
   feedback2: string;
-
 }

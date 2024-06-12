@@ -18,6 +18,8 @@ const CreateWritingPage: React.FC = () => {
     img2: "",
     q1: "",
     q2: "",
+    feedback1: "",
+    feedback2: "",
     student: "",
     studentId: "",
     wordCount1: "",
@@ -76,7 +78,7 @@ const CreateWritingPage: React.FC = () => {
             disabled={!formData.img1}
           />
         </div>
-        <Input
+        {/* <Input
           title="Question 1"
           placeholder="Enter question 1"
           value={formData.q1}
@@ -84,8 +86,8 @@ const CreateWritingPage: React.FC = () => {
           hasBorder={true}
           icon={faPenNib}
           required={true}
-        />
-        <Input
+        /> */}
+        {/* <Input
           title="Question 2"
           placeholder="Enter question 2"
           value={formData.q2}
@@ -93,9 +95,9 @@ const CreateWritingPage: React.FC = () => {
           hasBorder={true}
           icon={faPenNib}
           required={true}
-        />
-<Button text="Create" onClick={() => handleAddWritingTest} isLoading={isLoading} />
-{error && <p className={styles.error}>{error}</p>}
+        /> */}
+        <Button text="Create" onClick={() => handleAddWritingTest} isLoading={isLoading} />
+        {error && <p className={styles.error}>{error}</p>}
       </form>
     </div>
   );

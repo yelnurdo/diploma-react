@@ -13,13 +13,19 @@ import styles from "./CreateListeningPage.module.scss";
 
 const CreateListeningPage: React.FC = () => {
   const navigate = useNavigate();
-  const initialListeningTest: Omit<
-    IListeningTest,
-    "part" | "img1" | "img2" | "img3" | "img4" | "audio1" | "audio2" | "audio3" | "audio4"
-  > = {
-    id: "",
+  const initialListeningTest: Omit<IListeningTest, "id"> = {
+    part: "",
     student: "",
     studentId: "",
+    img1: "",
+    img2: "",
+    img3: "",
+    img4: "",
+    audio1: "",
+    audio2: "",
+    audio3: "",
+    audio4: "",
+    feedback: "",
     q1: "",
     q2: "",
     q3: "",
@@ -64,21 +70,13 @@ const CreateListeningPage: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const [part, setPart] = useState<string>("");
-  const [img1, setImg1] = useState<string>("");
-  const [img2, setImg2] = useState<string>("");
-  const [img3, setImg3] = useState<string>("");
-  const [img4, setImg4] = useState<string>("");
-  const [audio1, setAudio1] = useState<string>("");
-  const [audio2, setAudio2] = useState<string>("");
-  const [audio3, setAudio3] = useState<string>("");
-  const [audio4, setAudio4] = useState<string>("");
+  const [formData, setFormData] = useState(initialListeningTest);
 
   const handleAddListeningTest = async (event: FormEvent) => {
     event.preventDefault();
     setError("");
 
-    if (!part || !img1) {
+    if (!formData.part || !formData.img1) {
       setError("You should fill required fields");
       return;
     }
@@ -86,25 +84,18 @@ const CreateListeningPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      await addNewListeningTest({
-        ...initialListeningTest,
-        part,
-        img1,
-        img2,
-        img3,
-        img4,
-        audio1,
-        audio2,
-        audio3,
-        audio4
-      });
+      await addNewListeningTest(formData);
       navigate(LISTENING_PAGE_ROUTE);
     } catch (error) {
       console.log(error);
-      setError("An error occurred while adding the reading test");
+      setError("An error occurred while adding the listening test");
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleChange = (key: keyof IListeningTest, value: string) => {
+    setFormData({ ...formData, [key]: value });
   };
 
   return (
@@ -114,52 +105,52 @@ const CreateListeningPage: React.FC = () => {
         <Input
           title="Part name"
           placeholder="Enter test's part"
-          value={part}
-          setValue={setPart}
+          value={formData.part}
+          setValue={(value) => handleChange("part", value)}
           hasBorder={true}
           icon={faPenNib}
           required={true}
         />
         <div className={styles.grid}>
-          <ImageUploader folderName={LISTENING_TESTS_COLLECTION} setImage={setImg1} num={1} />
+          <ImageUploader folderName={LISTENING_TESTS_COLLECTION} setImage={(value) => handleChange("img1", value)} num={1} />
           <ImageUploader
             folderName={LISTENING_TESTS_COLLECTION}
-            setImage={setImg2}
+            setImage={(value) => handleChange("img2", value)}
             num={2}
-            disabled={!img1 || !audio1}
+            disabled={!formData.img1}
           />
           <ImageUploader
             folderName={LISTENING_TESTS_COLLECTION}
-            setImage={setImg3}
+            setImage={(value) => handleChange("img3", value)}
             num={3}
-            disabled={!img1 || !audio1 || !img2 || !audio2}
+            disabled={!formData.img1 || !formData.img2}
           />
           <ImageUploader
             folderName={LISTENING_TESTS_COLLECTION}
-            setImage={setImg4}
+            setImage={(value) => handleChange("img4", value)}
             num={4}
-            disabled={!img1 || !audio1 || !img2 || !audio2 || !img3 || !audio3}
+            disabled={!formData.img1 || !formData.img2 || !formData.img3}
           />
         </div>
         <div className={styles.grid}>
-          <AudioUploader folderName={LISTENING_TESTS_COLLECTION} setAudio={setAudio1} num={1} />
+          <AudioUploader folderName={LISTENING_TESTS_COLLECTION} setAudio={(value) => handleChange("audio1", value)} num={1} />
           <AudioUploader
             folderName={LISTENING_TESTS_COLLECTION}
-            setAudio={setAudio2}
+            setAudio={(value) => handleChange("audio2", value)}
             num={2}
-            disabled={!img1 || !audio1}
+            disabled={!formData.img1 || !formData.audio1}
           />
           <AudioUploader
             folderName={LISTENING_TESTS_COLLECTION}
-            setAudio={setAudio3}
+            setAudio={(value) => handleChange("audio3", value)}
             num={3}
-            disabled={!img1 || !audio1 || !img2 || !audio2}
+            disabled={!formData.img1 || !formData.audio1 || !formData.img2 || !formData.audio2}
           />
           <AudioUploader
             folderName={LISTENING_TESTS_COLLECTION}
-            setAudio={setAudio4}
+            setAudio={(value) => handleChange("audio4", value)}
             num={4}
-            disabled={!img1 || !audio1 || !img2 || !audio2 || !img3 || !audio3}
+            disabled={!formData.img1 || !formData.audio1 || !formData.img2 || !formData.audio2 || !formData.img3 || !formData.audio3}
           />
         </div>
         <Button text="Create" onClick={() => handleAddListeningTest} isLoading={isLoading} />
