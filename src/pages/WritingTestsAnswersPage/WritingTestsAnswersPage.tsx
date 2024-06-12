@@ -5,12 +5,22 @@ import Loader from '@components/Loader';
 import Input from '@components/Input';
 import Button from '@components/Button';
 import ImageViewer from '@components/ImageViewer';
+import Tesseract from 'tesseract.js';
+import { OpenAI } from 'openai';
 import styles from './WritingTestsAnswersPage.module.scss';
+
+// Initialize OpenAI with `dangerouslyAllowBrowser`
+const openai = new OpenAI({
+  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+  dangerouslyAllowBrowser: true,
+});
 
 const WritingTestsAnswersPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [tests, setTests] = useState<IWritingTestAnswer[]>([]);
   const [feedback, setFeedback] = useState<{ [key: string]: string }>({});
+  const [grades, setGrades] = useState<{ [key: string]: string }>({});
+  const [ocrResults, setOcrResults] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     const fetchWritingTestsAnswers = async () => {
@@ -52,6 +62,57 @@ const WritingTestsAnswersPage: React.FC = () => {
     }
   };
 
+  const evaluateAnswer = async (question: string, answer: string) => {
+    try {
+      const response = await openai.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          { role: 'system', content: 'You are an IELTS writing examiner.' },
+          { role: 'user', content: `Evaluate the following IELTS writing task answer and provide a grade out of 9 (including 0.5 increments) with brief feedback:\n\nQuestion: ${question}\n\nAnswer: ${answer}` }
+        ],
+        max_tokens: 150,
+      });
+
+      const message = response.choices[0]?.message?.content?.trim();
+      return message ? message : 'N/A';
+    } catch (error) {
+      console.error('Error evaluating answer:', error);
+      return 'N/A';
+    }
+  };
+
+  const analyzeImage = async (imageUrl: string) => {
+    try {
+      const response = await fetch(imageUrl, {
+        mode: 'cors'
+      });
+      const blob = await response.blob();
+      const result = await Tesseract.recognize(blob, 'eng');
+      return result.data.text;
+    } catch (error) {
+      console.error('Error analyzing image:', error);
+      return '';
+    }
+  };
+
+  const handleEvaluateTest = async (item: IWritingTestAnswer) => {
+    setIsLoading(true);
+    try {
+      const img1Text = await analyzeImage(item.img1);
+      const img2Text = item.img2 ? await analyzeImage(item.img2) : '';
+
+      const evaluationQ1 = await evaluateAnswer(img1Text, item.q1);
+      const evaluationQ2 = await evaluateAnswer(img2Text, item.q2);
+
+      setGrades({ ...grades, [item.id]: `Q1: ${evaluationQ1}\nQ2: ${evaluationQ2}` });
+      setOcrResults({ ...ocrResults, [item.id]: `Q1: ${img1Text}\nQ2: ${img2Text}` });
+    } catch (error) {
+      console.error('Error evaluating test:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className={styles.page}>
       {isLoading ? (
@@ -79,6 +140,22 @@ const WritingTestsAnswersPage: React.FC = () => {
                     <p>{item.wordCount2}</p>
                   </div>
                 </div>
+                <Button
+                  text="Evaluate Test"
+                  onClick={() => handleEvaluateTest(item)}
+                />
+                {ocrResults[item.id] && (
+                  <div className={styles.ocrResults}>
+                    <h4>OCR Results</h4>
+                    <p>{ocrResults[item.id]}</p>
+                  </div>
+                )}
+                {grades[item.id] && (
+                  <div className={styles.grades}>
+                    <h4>Grades</h4>
+                    <p>{grades[item.id]}</p>
+                  </div>
+                )}
                 <Input
                   title="Feedback"
                   placeholder="Enter feedback"
