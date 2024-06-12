@@ -10,7 +10,6 @@ const ReadingTestsAnswersPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [tests, setTests] = useState<IReadingTestAnswer[]>([]);
   const [feedback, setFeedback] = useState<{ [key: string]: string }>({});
-
   const [showDetails, setShowDetails] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
@@ -62,16 +61,15 @@ const ReadingTestsAnswersPage: React.FC = () => {
                   <img src={item.img1} alt="Test Image 1" className={styles.testImage} />
                   {item.img2 && <img src={item.img2} alt="Test Image 2" className={styles.testImage} />}
                   {item.img3 && <img src={item.img3} alt="Test Image 3" className={styles.testImage} />}
-                  <p>Answer 1: {item.q1}</p>
-                  <p>Answer 2: {item.q2}</p>
-                  <p>Answer 3: {item.q3}</p>
-                  <p>Answer 4: {item.q4}</p>
-                  <p>Answer 5: {item.q5}</p>
+                  {[...Array(40)].map((_, i) => (
+                    <p key={i}>Answer {i + 1}: {item[`q${i + 1}`]}</p>
+                  ))}
                   <Input
                     title="Feedback"
                     placeholder="Enter feedback"
                     value={feedback[item.id] || item.feedback}
                     setValue={(value) => handleFeedbackChange(item.id, value)}
+                    hasBorder={true}
                   />
                   <Button text="Submit Feedback" onClick={() => handleFeedbackSubmit(item.id)} />
                 </div>

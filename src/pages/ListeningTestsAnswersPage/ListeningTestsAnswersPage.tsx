@@ -10,7 +10,6 @@ const ListeningTestsAnswersPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [tests, setTests] = useState<IListeningTestAnswer[]>([]);
   const [feedback, setFeedback] = useState<{ [key: string]: string }>({});
-
   const [showDetails, setShowDetails] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
@@ -67,16 +66,15 @@ const ListeningTestsAnswersPage: React.FC = () => {
                   {item.audio2 && <audio controls src={item.audio2} className={styles.audio}></audio>}
                   {item.audio3 && <audio controls src={item.audio3} className={styles.audio}></audio>}
                   {item.audio4 && <audio controls src={item.audio4} className={styles.audio}></audio>}
-                  <p>Answer 1: {item.q1}</p>
-                  <p>Answer 2: {item.q2}</p>
-                  <p>Answer 3: {item.q3}</p>
-                  <p>Answer 4: {item.q4}</p>
-                  <p>Answer 5: {item.q5}</p>
+                  {[...Array(40)].map((_, i) => (
+                    <p key={i}>Answer {i + 1}: {item[`q${i + 1}`]}</p>
+                  ))}
                   <Input
                     title="Feedback"
                     placeholder="Enter feedback"
                     value={feedback[item.id] || item.feedback}
                     setValue={(value) => handleFeedbackChange(item.id, value)}
+                    hasBorder={true}
                   />
                   <Button text="Submit Feedback" onClick={() => handleFeedbackSubmit(item.id)} />
                 </div>

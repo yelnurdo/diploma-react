@@ -21,6 +21,7 @@ const WritingTestsAnswersPage: React.FC = () => {
   const [feedback, setFeedback] = useState<{ [key: string]: string }>({});
   const [grades, setGrades] = useState<{ [key: string]: string }>({});
   const [ocrResults, setOcrResults] = useState<{ [key: string]: string }>({});
+  const [showDetails, setShowDetails] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
     const fetchWritingTestsAnswers = async () => {
@@ -113,6 +114,10 @@ const WritingTestsAnswersPage: React.FC = () => {
     }
   };
 
+  const toggleDetails = (id: string) => {
+    setShowDetails({ ...showDetails, [id]: !showDetails[id] });
+  };
+
   return (
     <div className={styles.page}>
       {isLoading ? (
@@ -121,49 +126,53 @@ const WritingTestsAnswersPage: React.FC = () => {
         <div className={styles.grid}>
           {tests.map((item) => (
             <div key={item.id} className={styles.card}>
-              <div className={styles.content}>
-                <p>Student: {item.student}</p>
-                <p>Part: {item.part}</p>
-                <div className={styles.images}>
-                  <ImageViewer imageUrl={item.img1} />
-                  {item.img2 && <ImageViewer imageUrl={item.img2} />}
+              <Button text={showDetails[item.id] ? "Hide Test" : "Show Test"} onClick={() => toggleDetails(item.id)} />
+              {showDetails[item.id] && (
+                <div className={styles.content}>
+                  <p>Student: {item.student}</p>
+                  <p>Part: {item.part}</p>
+                  <div className={styles.images}>
+                    <ImageViewer imageUrl={item.img1} />
+                    {item.img2 && <ImageViewer imageUrl={item.img2} />}
+                  </div>
+                  <div className={styles.answers}>
+                    <div>
+                      <h4>Question 1</h4>
+                      <p>{item.q1}</p>
+                      <p>{item.wordCount1}</p>
+                    </div>
+                    <div>
+                      <h4>Question 2</h4>
+                      <p>{item.q2}</p>
+                      <p>{item.wordCount2}</p>
+                    </div>
+                  </div>
+                  <Button
+                    text="Evaluate Test"
+                    onClick={() => handleEvaluateTest(item)}
+                  />
+                  {ocrResults[item.id] && (
+                    <div className={styles.ocrResults}>
+                      <h4>OCR Results</h4>
+                      <p>{ocrResults[item.id]}</p>
+                    </div>
+                  )}
+                  {grades[item.id] && (
+                    <div className={styles.grades}>
+                      <h4>Grades</h4>
+                      <div className={styles.feedbackBox}>{grades[item.id]}</div>
+                    </div>
+                  )}
+                  <Input
+                    title="Feedback"
+                    placeholder="Enter feedback"
+                    value={feedback[item.id] || ''}
+                    setValue={(value) => handleFeedbackChange(item.id, value)}
+                    hasBorder={true}
+                  />
+                  <Button text="Submit Feedback" onClick={() => handleFeedbackSubmit(item.id)} />
                 </div>
-                <div className={styles.answers}>
-                  <div>
-                    <h4>Question 1</h4>
-                    <p>{item.q1}</p>
-                    <p>{item.wordCount1}</p>
-                  </div>
-                  <div>
-                    <h4>Question 2</h4>
-                    <p>{item.q2}</p>
-                    <p>{item.wordCount2}</p>
-                  </div>
-                </div>
-                <Button
-                  text="Evaluate Test"
-                  onClick={() => handleEvaluateTest(item)}
-                />
-                {ocrResults[item.id] && (
-                  <div className={styles.ocrResults}>
-                    <h4>OCR Results</h4>
-                    <p>{ocrResults[item.id]}</p>
-                  </div>
-                )}
-                {grades[item.id] && (
-                  <div className={styles.grades}>
-                    <h4>Grades</h4>
-                    <p>{grades[item.id]}</p>
-                  </div>
-                )}
-                <Input
-                  title="Feedback"
-                  placeholder="Enter feedback"
-                  value={feedback[item.id] || ''}
-                  setValue={(value) => handleFeedbackChange(item.id, value)}
-                />
-                <Button text="Submit Feedback" onClick={() => handleFeedbackSubmit(item.id)} />
-              </div>
+              )}
             </div>
           ))}
         </div>
