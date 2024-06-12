@@ -1,18 +1,18 @@
-import Loader from "@components/Loader";
-import styles from "./Button.module.scss";
+import React from 'react';
+import classNames from 'classnames';
+import styles from './Button.module.scss';
 
-interface Props {
+interface ButtonProps {
   text: string;
+  onClick: () => void;
+  className?: string;
   isLoading?: boolean;
-  onClick?: () => void; // Добавляем пропс onClick
 }
 
-const Button: React.FC<Props> = ({ text, isLoading, onClick }) => {
-  return (
-    <button className={styles.button} type="submit" onClick={onClick}>
-      {isLoading ? <Loader size={18} border={3} /> : text}
-    </button>
-  );
-};
+const Button: React.FC<ButtonProps> = ({ text, onClick, className, isLoading }) => (
+  <button onClick={onClick} className={classNames(styles.button, className)}>
+    {isLoading ? 'Loading...' : text}
+  </button>
+);
 
 export default Button;

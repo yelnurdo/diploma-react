@@ -243,5 +243,7 @@ export interface IWritingTestAnswer {
   q2: string;
   wordCount1: string;
   wordCount2: string;
-  feedback: string;
+  feedback1: string;
+  feedback2: string;
+
 }

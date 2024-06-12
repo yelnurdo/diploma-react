@@ -3,7 +3,6 @@ import { firestore } from "./config";
 import { IListeningTest, IReadingTest, IWritingTest, IListeningTestAnswer, IReadingTestAnswer, IWritingTestAnswer } from "@utils/interfaces";
 import { LISTENING_TESTS_COLLECTION, READING_TESTS_COLLECTION, WRITING_TESTS_COLLECTION } from "@utils/consts";
 
-// Functions to get all tests
 export const getAllReadingTests = async (): Promise<IReadingTest[]> => {
   const readingRef = collection(firestore, READING_TESTS_COLLECTION);
   const querySnapshot = await getDocs(readingRef);
@@ -133,4 +132,19 @@ export const updateReadingTestAnswerFeedback = async (id: string, feedback: stri
 export const updateWritingTestAnswerFeedback = async (id: string, feedback: string) => {
   const docRef = doc(firestore, 'WritingTestsAnswers', id);
   await updateDoc(docRef, { feedback });
+};
+
+export const updateListeningTestAnswer = async (id: string, data: Partial<IListeningTestAnswer>) => {
+  const docRef = doc(firestore, 'ListeningTestsAnswers', id);
+  await updateDoc(docRef, data);
+};
+
+export const updateReadingTestAnswer = async (id: string, data: Partial<IReadingTestAnswer>) => {
+  const docRef = doc(firestore, 'ReadingTestsAnswers', id);
+  await updateDoc(docRef, data);
+};
+
+export const updateWritingTestAnswer = async (id: string, data: Partial<IWritingTestAnswer>) => {
+  const docRef = doc(firestore, 'WritingTestsAnswers', id);
+  await updateDoc(docRef, data);
 };

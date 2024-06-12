@@ -162,7 +162,7 @@ const CreateListeningPage: React.FC = () => {
             disabled={!img1 || !audio1 || !img2 || !audio2 || !img3 || !audio3}
           />
         </div>
-        <Button text="Create" isLoading={isLoading} />
+        <Button text="Create" onClick={() => handleAddListeningTest} isLoading={isLoading} />
         {error && <p className={styles.error}>{error}</p>}
       </form>
     </div>

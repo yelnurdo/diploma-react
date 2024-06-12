@@ -58,8 +58,8 @@ const InputGrid: React.FC<Props> = ({ test, collection }) => {
           })}
         </div>
       </div>
-      <Button text="Update" isLoading={isLoading} />
-    </form>
+      <Button text="Update" isLoading={isLoading} onClick={() => {}} />
+      </form>
   );
 };
 

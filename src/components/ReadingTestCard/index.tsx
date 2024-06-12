@@ -152,8 +152,8 @@ const ReadingTestCard: React.FC<Props> = ({ item }) => {
               <p>Choose image</p>
             </label>
           )}
-          <Button text="Upload Image" isLoading={isLoading} />
-        </form>
+<Button text="Upload Image" onClick={() => handleUpload} isLoading={isLoading} />
+</form>
       )}
       {activeIndex === 5 && <InputGrid test={item} collection={READING_TESTS_COLLECTION} />}
     </div>

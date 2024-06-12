@@ -1,0 +1,134 @@
+@import "../../assets/scss/lib/variables";
+@import "../../assets/scss/lib/mixins";
+
+.wrapper {
+  position: relative;
+  padding: 40px 24px 16px;
+  border: 1px solid $gray;
+  border-radius: 12px;
+}
+
+.header {
+  position: absolute;
+  top: -24px;
+  left: 24px;
+  @include flex(flex-start, center);
+  gap: 16px;
+}
+
+.button {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: $blue;
+  @include flex(center, center);
+  transition: 0.3s ease;
+
+  svg {
+    font-size: 24px;
+    color: $white;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background: $blue-hover;
+  }
+}
+
+.active {
+  border: 1px solid $blue;
+  background: $white;
+
+  svg {
+    color: $blue;
+  }
+
+  &:hover {
+    background: $white;
+  }
+}
+
+.title {
+  @include text(16px, 16px, 700, rgba($dark-gray, 0.5)); // font-weight changed to 700
+  margin-bottom: 4px;
+}
+
+.text {
+  @include text(24px, 24px, 700, $dark-gray); // font-weight changed to 700
+}
+
+.content {
+  margin-top: 16px;
+}
+
+.form {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.inputRow {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.label {
+  margin-bottom: 4px;
+  font-weight: bold; // Make label text bold
+}
+
+.input {
+  padding: 8px;
+  border: 1px solid $gray;
+  border-radius: 4px;
+  font-weight: bold; // Make input text bold
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.block {
+  @include flex();
+}
+
+.btns {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: $red;
+  @include flex(center, center);
+  transition: 0.2s ease;
+
+  svg {
+    color: $white;
+    font-size: 16px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background: rgba($red, 0.8);
+  }
+}
+
+.blue {
+  background: $blue;
+
+  &:hover {
+    background: rgba($blue, 0.8);
+  }
+}
+
+.student {
+  margin-top: 16px;
+  font-weight: bold; // Make student text bold
+}

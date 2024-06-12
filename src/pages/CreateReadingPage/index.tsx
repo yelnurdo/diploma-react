@@ -115,7 +115,7 @@ const CreateReadingPage: React.FC = () => {
             disabled={!img1 || !img2}
           />
         </div>
-        <Button text="Create" isLoading={isLoading} />
+        <Button text="Create" onClick={() => handleAddReadingTest} isLoading={isLoading} />
         {error && <p className={styles.error}>{error}</p>}
       </form>
     </div>

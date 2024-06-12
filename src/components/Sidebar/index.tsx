@@ -1,4 +1,3 @@
-// src/components/Sidebar/index.tsx
 import { faArrowRightFromBracket, faBook, faHeadphones, faPen } from "@fortawesome/free-solid-svg-icons";
 import { useAppSelector } from "@hooks/reduxHooks";
 import { useAuthActions } from "@hooks/useAuthActions";
@@ -35,7 +34,7 @@ const Sidebar: React.FC = () => {
       <div>
         <div className={styles.logo}>
           <h2>- Destination -</h2>
-          <p>Admin Panel</p>
+          <p>{userEmail === "admin@admin.kz" ? "Admin Panel" : "Teacher Panel"}</p>
         </div>
         {userEmail === "admin@admin.kz" ? adminLinks : teacherLinks}
       </div>

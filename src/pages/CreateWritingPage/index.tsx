@@ -94,8 +94,8 @@ const CreateWritingPage: React.FC = () => {
           icon={faPenNib}
           required={true}
         />
-        <Button text="Create" isLoading={isLoading} />
-        {error && <p className={styles.error}>{error}</p>}
+<Button text="Create" onClick={() => handleAddWritingTest} isLoading={isLoading} />
+{error && <p className={styles.error}>{error}</p>}
       </form>
     </div>
   );

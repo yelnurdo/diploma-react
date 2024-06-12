@@ -1,3 +1,4 @@
+// src/pages/ReadingTestsAnswersPage/ReadingTestsAnswersPage.module.scss
 @import "../../assets/scss/lib/variables";
 @import "../../assets/scss/lib/mixins";
 
@@ -14,12 +15,4 @@
 
 .wrapper {
   height: 80%;
-}
-
-.feedbackBox {
-  border: 1px solid #ccc;
-  padding: 1rem;
-  margin-top: 0.5rem;
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
 }
