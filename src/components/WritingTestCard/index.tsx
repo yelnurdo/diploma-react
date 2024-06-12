@@ -1,7 +1,7 @@
 import { FormEvent, ChangeEvent, useState } from "react";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBan, faCheck, faImage, faPenToSquare, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faBan, faCheck, faImage, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { uploadImage } from "@my-firebase/storage";
 import { deleteData, updateWritingTaskUploadedImage } from "@my-firebase/firestore";
 import Button from "@components/Button";
@@ -87,11 +87,11 @@ const WritingTestCard: React.FC<Props> = ({ item }) => {
             <FontAwesomeIcon icon={faPlus} />
           </div>
         )}
-        <div
+        {/* <div
           className={classNames(styles.button, { [styles.active]: activeIndex === 4 })}
           onClick={() => setActiveIndex(4)}>
           <FontAwesomeIcon icon={faPenToSquare} />
-        </div>
+        </div> */}
       </div>
       <div className={styles.block}>
         <div>

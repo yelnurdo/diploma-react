@@ -5,7 +5,7 @@ import {
   faBan,
   faCheck,
   faFolderClosed,
-  faPenToSquare,
+  // faPenToSquare,
   faTrash
 } from "@fortawesome/free-solid-svg-icons";
 import { deleteData } from "@my-firebase/firestore";
@@ -85,11 +85,11 @@ const ListeningTestCard: React.FC<Props> = ({ item }) => {
             <FontAwesomeIcon icon={faFolderClosed} />
           </div>
         )}
-        <div
+        {/* <div
           className={classNames(styles.button, { [styles.active]: activeIndex === 5 })}
           onClick={() => setActiveIndex(5)}>
           <FontAwesomeIcon icon={faPenToSquare} />
-        </div>
+        </div> */}
       </div>
       <div className={styles.block}>
         <div>
