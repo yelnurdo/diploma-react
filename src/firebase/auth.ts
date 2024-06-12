@@ -1,11 +1,11 @@
+// src/firebase/auth.ts
 import { FirebaseError } from 'firebase/app';
 import {
   signInWithEmailAndPassword,
-  signOut,
+  signOut as firebaseSignOut,
 } from 'firebase/auth';
 import { auth } from './config';
 import { IUser } from '../utils/interfaces';
-
 
 export const firebaseAuthSignIn = async (emailProp: string, password: string): Promise<string | IUser> => {
   try {
@@ -28,7 +28,7 @@ export const firebaseAuthSignIn = async (emailProp: string, password: string): P
 
 export const firebaseAuthSignOut = async () => {
   try {
-    await signOut(auth);
+    await firebaseSignOut(auth);
   } catch (error) {
     console.error(error);
   }
