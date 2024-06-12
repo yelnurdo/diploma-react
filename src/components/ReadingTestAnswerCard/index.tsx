@@ -1,3 +1,5 @@
+// src/components/ReadingTestAnswerCard/index.tsx
+
 import { FormEvent, useState } from "react";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -49,7 +51,7 @@ const ReadingTestAnswerCard: React.FC<Props> = ({ item }) => {
     event.preventDefault();
     try {
       setIsLoading(true);
-      await updateReadingTestAnswer(item.id, { ...answers, feedback });
+      await updateReadingTestAnswer(item.id, { ...item, feedback, ...answers });
       setIsLoading(false);
       alert('Feedback and answers updated successfully');
     } catch (error) {
@@ -145,7 +147,7 @@ const ReadingTestAnswerCard: React.FC<Props> = ({ item }) => {
               onChange={(e) => setFeedback(e.target.value)}
             />
           </div>
-          <Button text="Assess" onClick={() => handleUpdate} isLoading={isLoading} />
+          <Button text="Assess" onClick={handleUpdate} isLoading={isLoading} />
           </form>
       )}
     </div>

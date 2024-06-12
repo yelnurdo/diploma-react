@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc, where, query} from "firebase/firestore";
 import { firestore } from "./config";
 import { IListeningTest, IReadingTest, IWritingTest, IListeningTestAnswer, IReadingTestAnswer, IWritingTestAnswer } from "@utils/interfaces";
 import { LISTENING_TESTS_COLLECTION, READING_TESTS_COLLECTION, WRITING_TESTS_COLLECTION } from "@utils/consts";
@@ -134,17 +134,32 @@ export const updateWritingTestAnswerFeedback = async (id: string, feedback: stri
   await updateDoc(docRef, { feedback });
 };
 
-export const updateListeningTestAnswer = async (id: string, data: Partial<IListeningTestAnswer>) => {
-  const docRef = doc(firestore, 'ListeningTestsAnswers', id);
+const findDocumentByFieldId = async (collectionName: string, fieldId: string) => {
+  const collectionRef = collection(firestore, collectionName);
+  const q = query(collectionRef, where('id', '==', fieldId));
+  const querySnapshot = await getDocs(q);
+
+  if (!querySnapshot.empty) {
+    return querySnapshot.docs[0];
+  } else {
+    throw new Error(`Document with id ${fieldId} not found in ${collectionName} collection`);
+  }
+};
+
+export const updateListeningTestAnswer = async (fieldId: string, data: Partial<IListeningTestAnswer>) => {
+  const docSnap = await findDocumentByFieldId('ListeningTestsAnswers', fieldId);
+  const docRef = doc(firestore, 'ListeningTestsAnswers', docSnap.id);
   await updateDoc(docRef, data);
 };
 
-export const updateReadingTestAnswer = async (id: string, data: Partial<IReadingTestAnswer>) => {
-  const docRef = doc(firestore, 'ReadingTestsAnswers', id);
+export const updateReadingTestAnswer = async (fieldId: string, data: Partial<IReadingTestAnswer>) => {
+  const docSnap = await findDocumentByFieldId('ReadingTestsAnswers', fieldId);
+  const docRef = doc(firestore, 'ReadingTestsAnswers', docSnap.id);
   await updateDoc(docRef, data);
 };
 
-export const updateWritingTestAnswer = async (id: string, data: Partial<IWritingTestAnswer>) => {
-  const docRef = doc(firestore, 'WritingTestsAnswers', id);
+export const updateWritingTestAnswer = async (fieldId: string, data: Partial<IWritingTestAnswer>) => {
+  const docSnap = await findDocumentByFieldId('WritingTestsAnswers', fieldId);
+  const docRef = doc(firestore, 'WritingTestsAnswers', docSnap.id);
   await updateDoc(docRef, data);
 };

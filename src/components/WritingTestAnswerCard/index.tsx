@@ -1,29 +1,4 @@
-import { useState, ChangeEvent } from 'react';
-import classNames from 'classnames';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImage, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-import { updateWritingTestAnswer } from '@my-firebase/firestore';
-import ImageViewer from '@components/ImageViewer';
-import { IWritingTestAnswer } from '@utils/interfaces';
-import styles from './WritingTestAnswerCard.module.scss';
-import Button from '@components/Button';
-import Input from '@components/Input';
-
-interface Props {
-  item: IWritingTestAnswer;
-}
-
-const WritingTestAnswerCard: React.FC<Props> = ({ item }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [activeIndex, setActiveIndex] = useState<number>(1);
-  const [showQuestions, setShowQuestions] = useState<boolean>(false);
-  const activeImageUrl = activeIndex === 1 ? item.img1 : activeIndex === 2 ? item.img2 : '';
-  const [feedback1, setFeedback1] = useState(item.feedback1 || '');
-  const [feedback2, setFeedback2] = useState(item.feedback2 || '');
-  const [q1, setQ1] = useState(item.q1);
-  const [q2, setQ2] = useState(item.q2);
-
-  // Commented out AI response fetching
+// Commented out AI response fetching
   /*
   const getAIResponse = async (question: string) => {
     try {
@@ -62,6 +37,32 @@ const WritingTestAnswerCard: React.FC<Props> = ({ item }) => {
     fetchAIResponse();
   }, [q1, q2]);
   */
+// src/components/WritingTestAnswerCard/index.tsx
+
+import { useState, ChangeEvent } from 'react';
+import classNames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faImage, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { updateWritingTestAnswer } from '@my-firebase/firestore';
+import ImageViewer from '@components/ImageViewer';
+import { IWritingTestAnswer } from '@utils/interfaces';
+import styles from './WritingTestAnswerCard.module.scss';
+import Button from '@components/Button';
+import Input from '@components/Input';
+
+interface Props {
+  item: IWritingTestAnswer;
+}
+
+const WritingTestAnswerCard: React.FC<Props> = ({ item }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [activeIndex, setActiveIndex] = useState<number>(1);
+  const [showQuestions, setShowQuestions] = useState<boolean>(false);
+  const activeImageUrl = activeIndex === 1 ? item.img1 : activeIndex === 2 ? item.img2 : '';
+  const [feedback1, setFeedback1] = useState(item.feedback1 || '');
+  const [feedback2, setFeedback2] = useState(item.feedback2 || '');
+  const [q1, setQ1] = useState(item.q1);
+  const [q2, setQ2] = useState(item.q2);
 
   const handleFeedbackSubmit = async () => {
     setIsLoading(true);

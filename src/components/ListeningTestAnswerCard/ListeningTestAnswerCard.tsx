@@ -1,7 +1,7 @@
 import { FormEvent, useState } from 'react';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBan, faCheck, faFolderClosed, faPenToSquare } from '@fortawesome/free-solid-svg-icons'; // Removed faTrash
+import { faBan, faCheck, faFolderClosed, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { deleteData, updateListeningTestAnswer } from '@my-firebase/firestore';
 import ImageViewer from '@components/ImageViewer';
 import Loader from '@components/Loader';
@@ -63,7 +63,9 @@ const ListeningTestAnswerCard: React.FC<Props> = ({ item }) => {
   const handleUpdate = async () => {
     try {
       setIsLoading(true);
-      await updateListeningTestAnswer(item.id, { ...item, feedback, ...answers });
+      console.log('Updating document with field ID:', item.id);
+      console.log('Update data:', { feedback, ...answers });
+      await updateListeningTestAnswer(item.id, { ...answers, feedback });
       setIsLoading(false);
       alert('Feedback and answers updated successfully');
     } catch (error) {
